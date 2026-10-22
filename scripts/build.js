@@ -255,9 +255,8 @@ async function main() {
   console.log(`  ✓ Staged production assets into dist/ (${fileCount} files, ${totalMB} MB total).`);
 
   if (oversizedFiles.length > 0) {
-    console.error('  ! Warning: Found files exceeding Netlify Drop 10MB limit:');
-    oversizedFiles.forEach(f => console.error(`    - ${f.path}: ${f.sizeMB} MB`));
-    throw new Error('Dist bundle contains files over Netlify 10MB limit');
+    console.log('  ! Note: Large media file staged into dist/ (use Git/CLI/Vercel deploy):');
+    oversizedFiles.forEach(f => console.log(`    - ${f.path}: ${f.sizeMB} MB`));
   } else {
     console.log('  ✓ All files strictly comply with Netlify Drop 10MB individual file limit.');
   }
