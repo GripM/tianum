@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Tianum Networth | Fiduciary CMS Login</title>
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+	<link rel="stylesheet" href="/public/admin/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/public/admin/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/public/admin/css/adminlte.min.css">
+	<link rel="stylesheet" href="/public/admin/css/_all-skins.min.css">
+	<link rel="stylesheet" href="/public/admin/css/style.css">
+	<link rel="stylesheet" href="/public/admin/css/tianum-admin.css">
+</head>
+
+<body class="hold-transition login-page" style="background: radial-gradient(circle at 50% 20%, #0a1b2d 0%, #050e17 100%);">
+
+<div class="login-box">
+	
+	<div class="login-logo">
+		<div style="margin-bottom: 8px;">
+			<i class="fa fa-shield" style="font-size: 42px; color: #c49b48;"></i>
+		</div>
+		<b style="color: #ffffff; letter-spacing: -0.02em;">Tianum Networth</b>
+		<div style="font-size: 12px; color: #c49b48; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; margin-top: 4px;">
+			Enterprise Administration
+		</div>
+	</div>
+
+  	<div class="login-box-body" style="background: #081624; border: 1px solid rgba(196,155,72,0.3); border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); padding: 30px;">
+    	<p class="login-box-msg" style="color: #94a3b8; font-size: 13px; margin-bottom: 20px;">
+			Authenticate with your credentials to access the administrative portal
+		</p>
+    
+		<div id="loginAlert" style="display: none;" class="alert alert-danger py-2 px-3 small"></div>
+
+		<form id="adminLoginForm" action="/api/admin/login" method="POST">
+			<div class="form-group" style="margin-bottom: 18px;">
+				<label style="color: #cbd5e1; font-size: 12px; font-weight: 600;">Email Address</label>
+				<input class="form-control tn-login-input" placeholder="Enter registered email" name="email" id="loginEmail" type="email" autocomplete="email" autofocus required
+				       value=""
+				       style="background-color: #050e17 !important; border: 1px solid rgba(196,155,72,0.4) !important; color: #ffffff !important; height: 44px; font-size: 14px;">
+			</div>
+			
+			<div class="form-group" style="margin-bottom: 22px;">
+				<label style="color: #cbd5e1; font-size: 12px; font-weight: 600;">Password</label>
+				<div style="position: relative;">
+					<input class="form-control tn-login-input" placeholder="Enter administrative password" name="password" id="loginPassword" type="password" autocomplete="current-password" required
+					       value=""
+					       style="background-color: #050e17 !important; border: 1px solid rgba(196,155,72,0.4) !important; color: #ffffff !important; height: 44px; font-size: 14px; padding-right: 40px;">
+					<button type="button" id="togglePasswordBtn" class="tn-password-toggle-btn" aria-label="Toggle password visibility">
+						<i class="fa fa-eye" id="togglePasswordIcon"></i>
+					</button>
+				</div>
+			</div>
+
+			<div class="row align-items-center">
+				<div class="col-xs-6" style="padding-top: 10px;">
+					<span style="color: #64748b; font-size: 11px;">
+						<i class="fa fa-lock me-1"></i> Fiduciary Secured
+					</span>
+				</div>
+				<div class="col-xs-6 text-right">
+					<button type="submit" id="loginBtn" class="btn btn-block" style="background: #c49b48; color: #081624; font-weight: 700; height: 40px; font-size: 13px; border: none; border-radius: 6px;">
+						Sign In <i class="fa fa-arrow-right ms-1"></i>
+					</button>
+				</div>
+			</div>
+		</form>
+
+		<div class="mt-4 pt-3 text-center border-top" style="border-color: rgba(255,255,255,0.08) !important; margin-top: 24px; padding-top: 16px;">
+			<a href="/" style="color: #eed699; font-size: 12.5px; text-decoration: none;">
+				<i class="fa fa-arrow-left me-1"></i> Return to Tianum Public Website
+			</a>
+		</div>
+
+	</div>
+</div>
+
+<script src="/public/admin/js/jquery-2.2.3.min.js"></script>
+<script src="/public/admin/js/bootstrap.min.js"></script>
+<script src="/public/admin/js/tianum-admin-bridge.js"></script>
+
+<script>
+document.getElementById('adminLoginForm').addEventListener('submit', async function(e) {
+	e.preventDefault();
+	const email = document.getElementById('loginEmail').value.trim();
+	const password = document.getElementById('loginPassword').value.trim();
+	const alertBox = document.getElementById('loginAlert');
+	const btn = document.getElementById('loginBtn');
+
+	btn.disabled = true;
+	btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Authenticating...';
+	alertBox.style.display = 'none';
+
+	try {
+		const res = await fetch('/api/admin/login', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ email, password })
+		});
+		const data = await res.json();
+		if (data.status === 'success') {
+			sessionStorage.setItem('tn_session_active', '1');
+			sessionStorage.setItem('tn_admin_user', JSON.stringify({ email: email, full_name: 'Prakash Bhootra' }));
+			document.cookie = 'tn_session_client=1; Path=/; SameSite=Lax';
+			window.location.href = '/admin/dashboard';
+		} else {
+			alertBox.textContent = data.message || 'Invalid credentials. Please verify and try again.';
+			alertBox.style.display = 'block';
+			btn.disabled = false;
+			btn.innerHTML = 'Sign In <i class="fa fa-arrow-right ms-1"></i>';
+		}
+	} catch (err) {
+		alertBox.textContent = 'Network or server error during authentication.';
+		alertBox.style.display = 'block';
+		btn.disabled = false;
+		btn.innerHTML = 'Sign In <i class="fa fa-arrow-right ms-1"></i>';
+	}
+});
+
+const toggleBtn = document.getElementById('togglePasswordBtn');
+if (toggleBtn) {
+	toggleBtn.addEventListener('click', function() {
+		const passInput = document.getElementById('loginPassword');
+		const passIcon = document.getElementById('togglePasswordIcon');
+		if (passInput.type === 'password') {
+			passInput.type = 'text';
+			passIcon.className = 'fa fa-eye-slash';
+		} else {
+			passInput.type = 'password';
+			passIcon.className = 'fa fa-eye';
+		}
+	});
+}
+</script>
+
+</body>
+</html>

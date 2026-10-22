@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Tianum Networth | Client Enquiries Inbox</title>
+	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+	<link rel="stylesheet" href="/public/admin/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/public/admin/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/public/admin/css/ionicons.min.css">
+	<link rel="stylesheet" href="/public/admin/css/adminlte.min.css">
+	<link rel="stylesheet" href="/public/admin/css/_all-skins.min.css">
+	<link rel="stylesheet" href="/public/admin/css/style.css">
+	<link rel="stylesheet" href="/public/admin/css/tianum-admin.css">
+</head>
+
+<body class="hold-transition fixed skin-blue sidebar-mini">
+
+	<div class="wrapper">
+
+		<!-- Top Header Navbar -->
+		<header class="main-header">
+			<a href="/admin/dashboard" class="logo">
+				<span class="logo-mini"><i class="fa fa-shield" style="color: #c49b48;"></i></span>
+				<span class="logo-lg"><i class="fa fa-shield" style="color: #c49b48; margin-right: 6px;"></i> Tianum <span class="tn-gold-accent" style="color: #c49b48;">Admin</span></span>
+			</a>
+
+			<nav class="navbar navbar-static-top">
+				<a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+					<i class="fa fa-bars" aria-hidden="true"></i>
+					<span class="sr-only">Toggle navigation</span>
+				</a>
+
+				<div class="tn-admin-title-badge hidden-xs">
+					<span>Tianum Networth Managers</span>
+					<span class="badge">Enterprise Admin</span>
+				</div>
+
+				<div class="navbar-custom-menu">
+					<ul class="nav navbar-nav">
+						<li>
+							<a href="/" target="_blank" class="tn-topbar-box-btn tn-visit-site-btn tn-live-website-btn">
+								<i class="fa fa-external-link"></i> <span>Live Website</span>
+							</a>
+						</li>
+
+						<li class="dropdown user user-menu">
+							<a href="#" class="dropdown-toggle tn-topbar-box-btn tn-user-profile-btn" data-toggle="dropdown">
+								<img src="/public/uploads/team-member-0.jpeg" class="user-image" alt="user photo">
+								<span class="hidden-xs">Prakash Bhootra</span>
+								<i class="fa fa-angle-down ms-1" style="font-size: 11px;"></i>
+							</a>
+							<ul class="dropdown-menu">
+								<li class="user-header" style="background: #081624; color: #fff; padding: 18px 15px;">
+									<p>Prakash Bhootra<small style="color: #c49b48;">Managing Partner & Super Admin</small></p>
+								</li>
+								<li class="user-footer" style="padding: 10px; display: flex; justify-content: space-between;">
+									<div><a href="/admin/profile" class="btn btn-default btn-flat btn-sm">Account & Security</a></div>
+									<div><a href="/admin/logout" class="btn btn-danger btn-flat btn-sm">Log out</a></div>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</nav>
+		</header>
+
+		<!-- Main Sidebar Navigation (Strict 5 Core Modules) -->
+  		<aside class="main-sidebar">
+    		<section class="sidebar">
+      			<ul class="sidebar-menu">
+					<li class="header tn-sidebar-section-label">Management Core</li>
+
+					<!-- 1. DASHBOARD -->
+			        <li class="treeview">
+			          <a href="/admin/dashboard">
+			            <i class="fa fa-th-large"></i> <span>Dashboard</span>
+			          </a>
+			        </li>
+
+					<!-- 2. CLIENT ENQUIRIES -->
+					<li class="treeview active">
+			          <a href="/admin/enquiry">
+			            <i class="fa fa-envelope-o"></i> <span>Client Enquiries</span>
+						<span class="pull-right-container" id="sideUnreadBadge" style="display: none;">
+							<span class="label label-warning pull-right" id="sideUnreadCount" style="background-color: #c49b48 !important; border-radius: 10px; font-weight: 700;">
+								0 new
+							</span>
+						</span>
+			          </a>
+			        </li>
+
+					<!-- 3. WEBSITE CONTENT -->
+			        <li class="treeview">
+			          <a href="/admin/content">
+			            <i class="fa fa-pencil-square-o"></i> <span>Website Content</span>
+			          </a>
+			        </li>
+
+					<!-- 4. ACCOUNT AND SECURITY -->
+					<li class="treeview">
+			          <a href="/admin/profile">
+			            <i class="fa fa-lock"></i> <span>Account & Security</span>
+			          </a>
+			        </li>
+
+					<!-- 5. LOGOUT -->
+					<li class="treeview">
+			          <a href="/admin/logout" onclick="return confirm('Are you sure you want to log out of the administration panel?');">
+			            <i class="fa fa-sign-out"></i> <span>Logout</span>
+			          </a>
+			        </li>
+      			</ul>
+    		</section>
+  		</aside>
+
+  		<div class="content-wrapper">
+
+			<section class="content-header">
+				<div class="content-header-left">
+					<h1>
+						<i class="fa fa-envelope-open-o" style="color: #c49b48; margin-right: 8px;"></i>
+						Client Consultation Enquiries & Mandates
+					</h1>
+					<ol class="breadcrumb">
+						<li><a href="/admin/dashboard"><i class="fa fa-home"></i> Admin</a></li>
+						<li class="active">Client Enquiries</li>
+					</ol>
+				</div>
+			</section>
+
+			<section class="content">
+				<div class="row">
+					<div class="col-md-12">
+
+						<div id="enquiryActionAlert" style="display: none;" class="alert alert-success py-2 px-3 small mb-3"></div>
+
+						<!-- Filter Pills & Search Box -->
+						<div class="box box-solid" style="border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+							<div class="box-body" style="padding: 16px 20px;">
+								<div class="row align-items-center">
+									
+									<!-- Status Filters -->
+									<div class="col-md-7 col-sm-12" style="margin-bottom: 10px;">
+										<div class="btn-group" role="group">
+											<button type="button" class="btn btn-sm btn-primary status-tab-btn" data-status="all" onclick="filterByStatus('all')">
+												All <span class="badge" id="tabTotalBadge" style="background: rgba(0,0,0,0.2);">0</span>
+											</button>
+											<button type="button" class="btn btn-sm btn-default status-tab-btn" data-status="New" onclick="filterByStatus('New')">
+												New <span class="badge" id="tabNewBadge" style="background: rgba(0,0,0,0.2);">0</span>
+											</button>
+											<button type="button" class="btn btn-sm btn-default status-tab-btn" data-status="In Progress" onclick="filterByStatus('In Progress')">
+												In Progress <span class="badge" id="tabProgressBadge" style="background: rgba(0,0,0,0.2);">0</span>
+											</button>
+											<button type="button" class="btn btn-sm btn-default status-tab-btn" data-status="Resolved" onclick="filterByStatus('Resolved')">
+												Resolved <span class="badge" id="tabResolvedBadge" style="background: rgba(0,0,0,0.2);">0</span>
+											</button>
+										</div>
+									</div>
+
+									<!-- Search Input -->
+									<div class="col-md-5 col-sm-12">
+										<div class="input-group" style="width: 100%;">
+											<input type="text" id="enquirySearchInput" class="form-control input-sm" 
+												   placeholder="Search by client name, email, or subject..."
+												   oninput="onSearchInput(this.value)"
+												   style="border-radius: 4px 0 0 4px; height: 34px;">
+											<span class="input-group-btn">
+												<button type="button" class="btn btn-default btn-sm" style="height: 34px;">
+													<i class="fa fa-search"></i>
+												</button>
+												<button type="button" id="clearSearchBtn" class="btn btn-danger btn-sm" style="height: 34px; display: none;" onclick="clearSearch()" title="Clear Search">
+													<i class="fa fa-times"></i>
+												</button>
+											</span>
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div>
+
+						<!-- Main Table -->
+						<div class="box box-info" style="border-top: 3px solid #c49b48; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.04);">
+							<div class="box-header with-border" style="padding: 15px 20px;">
+								<h3 class="box-title" style="font-size: 16px; font-weight: 700; color: #081624;">
+									Inbound Client Mandates <span id="enquiryCountHeader">(0)</span>
+								</h3>
+								<span class="text-muted small ms-2">- Server-validated records with real-time status management</span>
+							</div>
+							<div class="box-body table-responsive no-padding">
+								<table class="table table-hover" style="margin-bottom: 0;">
+									<thead>
+										<tr style="background: #f8fafc; color: #475569; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em;">
+											<th style="width: 50px; padding: 12px 16px; text-align: center;">State</th>
+											<th style="width: 110px; padding: 12px;">Date</th>
+											<th style="padding: 12px;">Client Details</th>
+											<th style="padding: 12px;">Purpose & Context</th>
+											<th style="width: 150px; padding: 12px; text-align: center;">Status</th>
+											<th style="width: 130px; padding: 12px 20px; text-align: right;">Actions</th>
+										</tr>
+									</thead>
+									<tbody id="enquiryListBody">
+										<tr>
+											<td colspan="6" class="text-center py-4 text-muted">
+												<i class="fa fa-spinner fa-spin me-1"></i> Loading client enquiries...
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</section>
+
+		</div>
+
+		<!-- Dynamic Mandate Detail Modal Container -->
+		<div class="modal fade" id="mandateDetailModal" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content" style="border-radius: 8px; overflow: hidden;">
+					<div class="modal-header" style="background: #081624; color: #fff; padding: 16px 20px;">
+						<button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" style="color: #fff; opacity: 0.8;">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" style="color: #fff; font-size: 16px;">
+							<i class="fa fa-briefcase text-gold" style="color: #c49b48; margin-right: 6px;"></i>
+							Client Consultation Mandate Details
+						</h4>
+					</div>
+					<div class="modal-body" style="padding: 24px;" id="modalBodyContent">
+						<!-- Injected via JS -->
+					</div>
+					<div class="modal-footer" style="background: #f8fafc; padding: 12px 20px;">
+						<a id="modalReplyBtn" href="#" class="btn btn-primary btn-sm pull-left" style="background: #081624; border-color: #081624; font-weight: 600; margin-right: 8px;">
+							<i class="fa fa-reply me-1"></i> Reply via Email
+						</a>
+						<a id="modalCallBtn" href="#" class="btn btn-success btn-sm pull-left" style="background: #059669; border-color: #059669; font-weight: 600;">
+							<i class="fa fa-phone me-1"></i> Call Client
+						</a>
+						<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<script src="/public/admin/js/jquery-2.2.4.min.js"></script>
+	<script src="/public/admin/js/bootstrap.min.js"></script>
+	<script src="/public/admin/js/app.min.js"></script>
+	<script src="/public/admin/js/tianum-admin-bridge.js"></script>
+
+	<script>
+	let currentStatusFilter = 'all';
+	let currentSearchQuery = '';
+	let allEnquiriesList = [];
+
+	async function fetchEnquiries() {
+		try {
+			const res = await fetch('/api/admin/enquiries');
+			if (res.status === 401) {
+				window.location.href = '/admin/login';
+				return;
+			}
+			const data = await res.json();
+			allEnquiriesList = data.enquiries || [];
+			
+			// Update badges
+			updateFilterBadges(allEnquiriesList);
+			renderFilteredEnquiries();
+		} catch (err) {
+			console.error('Failed to fetch enquiries:', err);
+			// Resilient fallback: read directly from localStorage
+			try {
+				const local = localStorage.getItem('tn_enquiries');
+				if (local) {
+					allEnquiriesList = JSON.parse(local);
+					updateFilterBadges(allEnquiriesList);
+					renderFilteredEnquiries();
+				}
+			} catch(e) {}
+		}
+	}
+	window.fetchEnquiries = fetchEnquiries;
+
+	function updateFilterBadges(list) {
+		const total = list.length;
+		const newCount = list.filter(e => e.status === 'New').length;
+		const progressCount = list.filter(e => e.status === 'In Progress').length;
+		const resolvedCount = list.filter(e => e.status === 'Resolved').length;
+		const unreadCount = list.filter(e => !e.is_read).length;
+
+		document.getElementById('tabTotalBadge').textContent = total;
+		document.getElementById('tabNewBadge').textContent = newCount;
+		document.getElementById('tabProgressBadge').textContent = progressCount;
+		document.getElementById('tabResolvedBadge').textContent = resolvedCount;
+
+		if (unreadCount > 0) {
+			document.getElementById('sideUnreadBadge').style.display = 'block';
+			document.getElementById('sideUnreadCount').textContent = unreadCount + ' new';
+		} else {
+			document.getElementById('sideUnreadBadge').style.display = 'none';
+		}
+	}
+
+	function filterByStatus(status) {
+		currentStatusFilter = status;
+		document.querySelectorAll('.status-tab-btn').forEach(btn => {
+			if (btn.getAttribute('data-status') === status) {
+				btn.className = 'btn btn-sm btn-primary status-tab-btn';
+			} else {
+				btn.className = 'btn btn-sm btn-default status-tab-btn';
+			}
+		});
+		renderFilteredEnquiries();
+	}
+
+	function onSearchInput(val) {
+		currentSearchQuery = val.trim().toLowerCase();
+		document.getElementById('clearSearchBtn').style.display = currentSearchQuery ? 'inline-block' : 'none';
+		renderFilteredEnquiries();
+	}
+
+	function clearSearch() {
+		document.getElementById('enquirySearchInput').value = '';
+		currentSearchQuery = '';
+		document.getElementById('clearSearchBtn').style.display = 'none';
+		renderFilteredEnquiries();
+	}
+
+	function renderFilteredEnquiries() {
+		let filtered = allEnquiriesList;
+
+		if (currentStatusFilter !== 'all') {
+			filtered = filtered.filter(e => e.status === currentStatusFilter);
+		}
+
+		if (currentSearchQuery) {
+			filtered = filtered.filter(e => {
+				const name = (e.name || '').toLowerCase();
+				const email = (e.email || '').toLowerCase();
+				const sub = (e.subject || '').toLowerCase();
+				const mob = (e.mobile || '').toLowerCase();
+				return name.includes(currentSearchQuery) || email.includes(currentSearchQuery) || sub.includes(currentSearchQuery) || mob.includes(currentSearchQuery);
+			});
+		}
+
+		document.getElementById('enquiryCountHeader').textContent = '(' + filtered.length + ')';
+		const tbody = document.getElementById('enquiryListBody');
+
+		if (filtered.length === 0) {
+			tbody.innerHTML = `
+				<tr>
+					<td colspan="6" class="text-center py-5 text-muted" style="padding: 50px 20px;">
+						<i class="fa fa-inbox fa-3x mb-3 d-block" style="color: #cbd5e1;"></i>
+						<h5 style="color: #64748b; font-weight: 600;">No Enquiries Match Your Filter</h5>
+						<p style="font-size: 13px; max-width: 450px; margin: 0 auto;">No records found matching status "${escapeHtml(currentStatusFilter)}" and query "${escapeHtml(currentSearchQuery)}".</p>
+					</td>
+				</tr>
+			`;
+			return;
+		}
+
+		tbody.innerHTML = filtered.map(row => {
+			const isUnread = !row.is_read;
+			const status = row.status || 'New';
+			let statusClass = 'tn-status-new';
+			if (status === 'In Progress') { statusClass = 'tn-status-progress'; }
+			else if (status === 'Resolved') { statusClass = 'tn-status-resolved'; }
+
+			return `
+				<tr style="${isUnread ? 'background: #fffdf5; font-weight: 500;' : ''} cursor: pointer; transition: background 0.15s ease;"
+				    onclick="openDetailModal(${row.id})"
+				    class="tn-enquiry-row"
+				    title="Click to view full mandate details">
+					<!-- State Indicator -->
+					<td style="padding: 14px 16px; text-align: center; vertical-align: middle;">
+						${isUnread ? '<span class="badge" title="Unread Mandate" style="background: #eab308; width: 10px; height: 10px; padding: 0; border-radius: 50%; display: inline-block;">&nbsp;</span>' : '<span class="badge" title="Read" style="background: #cbd5e1; width: 8px; height: 8px; padding: 0; border-radius: 50%; display: inline-block;">&nbsp;</span>'}
+					</td>
+
+					<!-- Submission Date -->
+					<td style="padding: 14px 12px; vertical-align: middle;">
+						<span class="text-muted small">${(row.created_at || '').slice(0, 10)}</span>
+					</td>
+
+					<!-- Client Details -->
+					<td style="padding: 14px 12px; vertical-align: middle;">
+						<div style="font-size: 14px; font-weight: 700; color: #081624;">
+							${escapeHtml(row.name)}
+						</div>
+						<div class="small">
+							<a href="mailto:${escapeHtml(row.email)}" class="text-muted text-decoration-none">
+								<i class="fa fa-envelope-o text-muted me-1"></i> ${escapeHtml(row.email)}
+							</a>
+						</div>
+						<div class="small text-muted">
+							<a href="tel:${escapeHtml(row.mobile)}" class="text-muted text-decoration-none">
+								<i class="fa fa-phone text-muted me-1"></i> ${escapeHtml(row.mobile || '-')}
+							</a>
+						</div>
+					</td>
+
+					<!-- Purpose & Message Context -->
+					<td style="padding: 14px 12px; vertical-align: middle;">
+						<span class="badge" style="background: rgba(196,155,72,0.12); color: #c49b48; border: 1px solid rgba(196,155,72,0.3); font-size: 11px; font-weight: 600; margin-bottom: 4px; display: inline-block;">
+							${escapeHtml(row.subject || 'Wealth Consultation')}
+						</span>
+						<div class="text-muted small" style="max-width: 340px; line-height: 1.5; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+							${escapeHtml(row.message || '-')}
+						</div>
+					</td>
+
+					<!-- Status Updater -->
+					<td style="padding: 14px 12px; text-align: center; vertical-align: middle;" onclick="event.stopPropagation()">
+						<select class="tn-status-select ${statusClass}" onchange="updateStatus(${row.id}, this.value, this)" aria-label="Change status">
+							<option value="New" ${status === 'New' ? 'selected' : ''}>● New</option>
+							<option value="In Progress" ${status === 'In Progress' ? 'selected' : ''}>● In Progress</option>
+							<option value="Resolved" ${status === 'Resolved' ? 'selected' : ''}>● Resolved</option>
+						</select>
+					</td>
+
+					<!-- Actions -->
+					<td style="padding: 14px 20px; text-align: right; vertical-align: middle;" onclick="event.stopPropagation()">
+						<div class="btn-group" role="group">
+							<button type="button" class="btn btn-default btn-xs" title="View Full Mandate Details" onclick="openDetailModal(${row.id})">
+								<i class="fa fa-eye"></i>
+							</button>
+							<button type="button" class="btn btn-default btn-xs" title="${isUnread ? 'Mark as Read' : 'Mark as Unread'}" onclick="toggleReadState(${row.id})">
+								<i class="fa ${isUnread ? 'fa-check' : 'fa-envelope'}"></i>
+							</button>
+							<button type="button" class="btn btn-danger btn-xs" title="Delete Enquiry" onclick="deleteEnquiry(${row.id})">
+								<i class="fa fa-trash"></i>
+							</button>
+						</div>
+					</td>
+				</tr>
+			`;
+		}).join('');
+	}
+
+	async function updateStatus(id, newStatus, selectEl) {
+		if (selectEl) {
+			selectEl.classList.remove('tn-status-new', 'tn-status-progress', 'tn-status-resolved');
+			if (newStatus === 'New') selectEl.classList.add('tn-status-new');
+			else if (newStatus === 'In Progress') selectEl.classList.add('tn-status-progress');
+			else if (newStatus === 'Resolved') selectEl.classList.add('tn-status-resolved');
+		}
+		try {
+			const res = await fetch('/api/admin/enquiries/status', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ id, status: newStatus })
+			});
+			const data = await res.json();
+			if (data.status === 'success') {
+				showAlert('Status updated to ' + newStatus + ' successfully.');
+				// Auto-parse URL query parameters (?status=New, ?id=12, ?q=...)
+	async function initEnquiryPage() {
+		await fetchEnquiries();
+		try {
+			const urlParams = new URLSearchParams(window.location.search);
+			const statusParam = urlParams.get('status');
+			const idParam = urlParams.get('id');
+			const qParam = urlParams.get('q');
+
+			if (statusParam && statusParam !== 'all') {
+				filterByStatus(statusParam);
+			}
+			if (qParam) {
+				document.getElementById('enquirySearchInput').value = qParam;
+				onSearchInput(qParam);
+			}
+			if (idParam) {
+				setTimeout(() => {
+					openDetailModal(parseInt(idParam, 10));
+				}, 200);
+			}
+		} catch(e) {}
+	}
+	initEnquiryPage();
+			}
+		} catch (err) {
+			alert('Failed to update status.');
+		}
+	}
+
+	async function toggleReadState(id) {
+		try {
+			const res = await fetch('/api/admin/enquiries/read', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ id })
+			});
+			const data = await res.json();
+			if (data.status === 'success') {
+				fetchEnquiries();
+			}
+		} catch (err) {
+			alert('Failed to toggle read state.');
+		}
+	}
+
+	async function deleteEnquiry(id) {
+		if (!confirm('Are you sure you want to permanently delete this client enquiry? This action cannot be undone.')) {
+			return;
+		}
+		try {
+			const res = await fetch('/api/admin/enquiries/delete', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ id })
+			});
+			const data = await res.json();
+			if (data.status === 'success') {
+				showAlert('Client enquiry deleted successfully.');
+				fetchEnquiries();
+			}
+		} catch (err) {
+			alert('Failed to delete enquiry.');
+		}
+	}
+
+	function openDetailModal(id) {
+		const row = allEnquiriesList.find(e => e.id === id);
+		if (!row) return;
+
+		// Mark as read automatically when opened
+		if (!row.is_read) {
+			toggleReadState(id);
+		}
+
+		let statusStyle = 'background: rgba(234,179,8,0.15); color: #a16207; border: 1px solid rgba(234,179,8,0.3);';
+		if (row.status === 'In Progress') statusStyle = 'background: rgba(56,189,248,0.15); color: #0284c7; border: 1px solid rgba(56,189,248,0.3);';
+		else if (row.status === 'Resolved') statusStyle = 'background: rgba(16,185,129,0.15); color: #059669; border: 1px solid rgba(16,185,129,0.3);';
+
+		const rawPhone = (row.mobile || '').replace(/[^0-9+]/g, '');
+
+		document.getElementById('modalBodyContent').innerHTML = `
+			<div class="row" style="margin-bottom: 16px;">
+				<div class="col-xs-7">
+					<label class="text-muted small" style="text-transform: uppercase; font-size: 11px; letter-spacing: 0.05em;">Client Name</label>
+					<div style="font-size: 18px; font-weight: 700; color: #081624;">${escapeHtml(row.name)}</div>
+				</div>
+				<div class="col-xs-5 text-right">
+					<label class="text-muted small" style="text-transform: uppercase; font-size: 11px; letter-spacing: 0.05em;">Current Status</label>
+					<div><span class="badge" style="font-size: 12px; padding: 5px 12px; ${statusStyle}">${escapeHtml(row.status || 'New')}</span></div>
+				</div>
+			</div>
+
+			<div class="row" style="margin-bottom: 16px; background: #f8fafc; border-radius: 6px; padding: 12px 6px; margin-left: 0; margin-right: 0; border: 1px solid #e2e8f0;">
+				<div class="col-xs-6">
+					<label class="text-muted small" style="text-transform: uppercase; font-size: 11px; letter-spacing: 0.05em;">Email Address</label>
+					<div>
+						<a href="mailto:${escapeHtml(row.email)}" style="color: #0284c7; font-weight: 600; text-decoration: none;">
+							<i class="fa fa-envelope-o me-1"></i> ${escapeHtml(row.email)}
+						</a>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<label class="text-muted small" style="text-transform: uppercase; font-size: 11px; letter-spacing: 0.05em;">Contact Mobile</label>
+					<div>
+						<a href="tel:${escapeHtml(rawPhone)}" style="color: #059669; font-weight: 600; text-decoration: none;">
+							<i class="fa fa-phone me-1"></i> ${escapeHtml(row.mobile || '-')}
+						</a>
+						${rawPhone ? `<a href="https://api.whatsapp.com/send?phone=${encodeURIComponent(rawPhone)}" target="_blank" class="badge" style="background: #25D366; color: #fff; margin-left: 8px; text-decoration: none;"><i class="fa fa-whatsapp"></i> Chat</a>` : ''}
+					</div>
+				</div>
+			</div>
+
+			<div style="margin-bottom: 16px;">
+				<label class="text-muted small" style="text-transform: uppercase; font-size: 11px; letter-spacing: 0.05em;">Inquiry Purpose</label>
+				<div>
+					<span class="badge" style="background: rgba(196,155,72,0.15); color: #c49b48; border: 1px solid rgba(196,155,72,0.3); font-size: 12px; padding: 5px 10px; font-weight: 600;">
+						${escapeHtml(row.subject || 'Wealth Consultation')}
+					</span>
+				</div>
+			</div>
+
+			<div style="margin-bottom: 20px;">
+				<label class="text-muted small" style="text-transform: uppercase; font-size: 11px; letter-spacing: 0.05em;">Full Mandate Context / Message</label>
+				<div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 14px; font-size: 13.5px; line-height: 1.6; color: #0f172a; white-space: pre-wrap; max-height: 220px; overflow-y: auto;">${escapeHtml(row.message || '-')}</div>
+			</div>
+
+			<div class="row align-items-center" style="border-top: 1px solid #e2e8f0; padding-top: 12px; margin-left: 0; margin-right: 0;">
+				<div class="col-xs-6 text-muted small">
+					<i class="fa fa-clock-o me-1"></i> Recorded on: ${escapeHtml(row.created_at || '-')} (ID: #${row.id})
+				</div>
+				<div class="col-xs-6 text-right">
+					<label class="small text-muted me-2" style="margin-right: 6px;">Update Status:</label>
+					<select class="tn-status-select ${row.status === 'In Progress' ? 'tn-status-progress' : (row.status === 'Resolved' ? 'tn-status-resolved' : 'tn-status-new')}" 
+					        onchange="updateStatus(${row.id}, this.value, this)" style="display: inline-block; width: auto; font-size: 12px;">
+						<option value="New" ${row.status === 'New' ? 'selected' : ''}>● New</option>
+						<option value="In Progress" ${row.status === 'In Progress' ? 'selected' : ''}>● In Progress</option>
+						<option value="Resolved" ${row.status === 'Resolved' ? 'selected' : ''}>● Resolved</option>
+					</select>
+				</div>
+			</div>
+		`;
+
+		document.getElementById('modalReplyBtn').href = 'mailto:' + encodeURIComponent(row.email) + '?subject=Re:%20' + encodeURIComponent(row.subject || 'Wealth Consultation');
+		const callBtn = document.getElementById('modalCallBtn');
+		if (callBtn) callBtn.href = 'tel:' + encodeURIComponent(rawPhone);
+		$('#mandateDetailModal').modal('show');
+	}
+
+	function showAlert(msg) {
+		const alertBox = document.getElementById('enquiryActionAlert');
+		alertBox.textContent = msg;
+		alertBox.style.display = 'block';
+		setTimeout(() => { alertBox.style.display = 'none'; }, 4000);
+	}
+
+	function escapeHtml(text) {
+		if (!text) return '';
+		return String(text).replace(/[&<>"']/g, function(m) {
+			return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+		});
+	}
+
+	fetchEnquiries();
+	</script>
+
+</body>
+</html>

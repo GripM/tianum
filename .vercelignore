@@ -1,0 +1,20 @@
+# Vercel Deployment Ignore List
+.git/
+.github/
+.netlify/
+.env
+.env.*
+.env.example
+node_modules/
+dist/
+scratch/
+backup_*/
+*.zip
+*.bak
+*.log
+server.js
+scripts/tunnel.js
+scripts/package.ps1
+_redirects
+_headers
+netlify.toml

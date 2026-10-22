@@ -1,0 +1,286 @@
+# ==============================================================================
+# Tianum Networth Managers - Netlify Configuration
+# ==============================================================================
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "20"
+  NPM_FLAGS = "--no-audit --no-fund"
+
+[functions]
+  node_bundler = "esbuild"
+
+# 1. API proxy for Serverless functions
+[[redirects]]
+  from = "/api/market-data"
+  to = "/.netlify/functions/market-data"
+  status = 200
+
+[[redirects]]
+  from = "/api/contact"
+  to = "/.netlify/functions/contact"
+  status = 200
+
+[[redirects]]
+  from = "/api/enquiry"
+  to = "/.netlify/functions/enquiry"
+  status = 200
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api"
+  status = 200
+
+# 2. Administrative Portal Navigation Routes
+[[redirects]]
+  from = "/admin/login"
+  to = "/admin/login.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/dashboard"
+  to = "/admin/dashboard.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/enquiry"
+  to = "/admin/enquiry.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/content"
+  to = "/admin/content.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/profile"
+  to = "/admin/profile.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/setting"
+  to = "/admin/setting.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/social_media"
+  to = "/admin/social_media.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/social-media"
+  to = "/admin/social_media.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/page_home"
+  to = "/admin/page_home.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/page-home"
+  to = "/admin/page_home.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/page_about"
+  to = "/admin/page_about.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/page-about"
+  to = "/admin/page_about.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/page_contact"
+  to = "/admin/page_contact.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/page-contact"
+  to = "/admin/page_contact.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/service"
+  to = "/admin/service.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/team_member"
+  to = "/admin/team_member.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/team-member"
+  to = "/admin/team_member.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/footer_setting"
+  to = "/admin/footer_setting.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/footer-setting"
+  to = "/admin/footer_setting.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/logout"
+  to = "/admin/login.html"
+  status = 302
+
+[[redirects]]
+  from = "/admin/login/logout"
+  to = "/admin/login.html"
+  status = 302
+
+[[redirects]]
+  from = "/admin"
+  to = "/admin/dashboard.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/"
+  to = "/admin/dashboard.html"
+  status = 200
+
+[[redirects]]
+  from = "/admin/*"
+  to = "/admin/login.html"
+  status = 200
+
+# 3. Public Website Clean Routes
+[[redirects]]
+  from = "/about"
+  to = "/about.html"
+  status = 200
+
+[[redirects]]
+  from = "/contact"
+  to = "/contact.html"
+  status = 200
+
+[[redirects]]
+  from = "/service"
+  to = "/equities.html"
+  status = 301
+
+[[redirects]]
+  from = "/service.html"
+  to = "/equities.html"
+  status = 301
+
+[[redirects]]
+  from = "/service-1"
+  to = "/service-1.html"
+  status = 200
+
+[[redirects]]
+  from = "/service-2"
+  to = "/service-2.html"
+  status = 200
+
+[[redirects]]
+  from = "/service-3"
+  to = "/service-3.html"
+  status = 200
+
+[[redirects]]
+  from = "/service-4"
+  to = "/service-4.html"
+  status = 200
+
+[[redirects]]
+  from = "/equities"
+  to = "/equities.html"
+  status = 200
+
+[[redirects]]
+  from = "/mutual-funds-sips"
+  to = "/mutual-funds-sips.html"
+  status = 200
+
+[[redirects]]
+  from = "/portfolio-management-services"
+  to = "/portfolio-management-services.html"
+  status = 200
+
+[[redirects]]
+  from = "/alternative-investment-funds"
+  to = "/alternative-investment-funds.html"
+  status = 200
+
+[[redirects]]
+  from = "/fixed-income"
+  to = "/fixed-income.html"
+  status = 200
+
+[[redirects]]
+  from = "/etfs-gold"
+  to = "/etfs-gold.html"
+  status = 200
+
+[[redirects]]
+  from = "/investment-banking"
+  to = "/investment-banking.html"
+  status = 200
+
+[[redirects]]
+  from = "/photo_gallery"
+  to = "/photo_gallery.html"
+  status = 200
+
+[[redirects]]
+  from = "/photo-gallery"
+  to = "/photo_gallery.html"
+  status = 200
+
+[[redirects]]
+  from = "/privacy_policy"
+  to = "/privacy_policy.html"
+  status = 200
+
+[[redirects]]
+  from = "/privacy-policy"
+  to = "/privacy_policy.html"
+  status = 200
+
+[[redirects]]
+  from = "/team_member"
+  to = "/team_member.html"
+  status = 200
+
+[[redirects]]
+  from = "/team-member"
+  to = "/team_member.html"
+  status = 200
+
+[[redirects]]
+  from = "/index"
+  to = "/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404
+
+# Custom Headers for Security and Performance
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/public/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

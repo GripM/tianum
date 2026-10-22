@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Build and Staging Outputs
+dist/
+.netlify/
+.vercel/
+
+# Deployment Zips and Large Backups
+*.zip
+*.bak
+backup_*/
+
+# Environment variables
+.env
+.env.*
+.env.local
+
+# Logs and scratch
+*.log
+scratch/
+
+# OS metadata
+.DS_Store
+Thumbs.db

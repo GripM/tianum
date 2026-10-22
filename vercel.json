@@ -1,0 +1,272 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "version": 2,
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "functions": {
+    "api/*.js": {
+      "memory": 1024,
+      "maxDuration": 10
+    }
+  },
+  "redirects": [
+    {
+      "source": "/service",
+      "destination": "/equities",
+      "permanent": true
+    },
+    {
+      "source": "/service.html",
+      "destination": "/equities",
+      "permanent": true
+    },
+    {
+      "source": "/admin/logout",
+      "destination": "/admin/login",
+      "permanent": false
+    },
+    {
+      "source": "/admin/login/logout",
+      "destination": "/admin/login",
+      "permanent": false
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/index",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/admin",
+      "destination": "/admin/dashboard.html"
+    },
+    {
+      "source": "/admin/",
+      "destination": "/admin/dashboard.html"
+    },
+    {
+      "source": "/admin/login",
+      "destination": "/admin/login.html"
+    },
+    {
+      "source": "/admin/dashboard",
+      "destination": "/admin/dashboard.html"
+    },
+    {
+      "source": "/admin/enquiry",
+      "destination": "/admin/enquiry.html"
+    },
+    {
+      "source": "/admin/content",
+      "destination": "/admin/content.html"
+    },
+    {
+      "source": "/admin/profile",
+      "destination": "/admin/profile.html"
+    },
+    {
+      "source": "/admin/setting",
+      "destination": "/admin/setting.html"
+    },
+    {
+      "source": "/admin/social_media",
+      "destination": "/admin/social_media.html"
+    },
+    {
+      "source": "/admin/social-media",
+      "destination": "/admin/social_media.html"
+    },
+    {
+      "source": "/admin/page_home",
+      "destination": "/admin/page_home.html"
+    },
+    {
+      "source": "/admin/page-home",
+      "destination": "/admin/page_home.html"
+    },
+    {
+      "source": "/admin/page_about",
+      "destination": "/admin/page_about.html"
+    },
+    {
+      "source": "/admin/page-about",
+      "destination": "/admin/page_about.html"
+    },
+    {
+      "source": "/admin/page_contact",
+      "destination": "/admin/page_contact.html"
+    },
+    {
+      "source": "/admin/page-contact",
+      "destination": "/admin/page_contact.html"
+    },
+    {
+      "source": "/admin/service",
+      "destination": "/admin/service.html"
+    },
+    {
+      "source": "/admin/team_member",
+      "destination": "/admin/team_member.html"
+    },
+    {
+      "source": "/admin/team-member",
+      "destination": "/admin/team_member.html"
+    },
+    {
+      "source": "/admin/footer_setting",
+      "destination": "/admin/footer_setting.html"
+    },
+    {
+      "source": "/admin/footer-setting",
+      "destination": "/admin/footer_setting.html"
+    },
+    {
+      "source": "/admin/:path*",
+      "destination": "/admin/:path*.html"
+    },
+    {
+      "source": "/about",
+      "destination": "/about.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/contact.html"
+    },
+    {
+      "source": "/equities",
+      "destination": "/equities.html"
+    },
+    {
+      "source": "/mutual-funds-sips",
+      "destination": "/mutual-funds-sips.html"
+    },
+    {
+      "source": "/portfolio-management-services",
+      "destination": "/portfolio-management-services.html"
+    },
+    {
+      "source": "/alternative-investment-funds",
+      "destination": "/alternative-investment-funds.html"
+    },
+    {
+      "source": "/fixed-income",
+      "destination": "/fixed-income.html"
+    },
+    {
+      "source": "/etfs-gold",
+      "destination": "/etfs-gold.html"
+    },
+    {
+      "source": "/investment-banking",
+      "destination": "/investment-banking.html"
+    },
+    {
+      "source": "/service-1",
+      "destination": "/service-1.html"
+    },
+    {
+      "source": "/service-2",
+      "destination": "/service-2.html"
+    },
+    {
+      "source": "/service-3",
+      "destination": "/service-3.html"
+    },
+    {
+      "source": "/service-4",
+      "destination": "/service-4.html"
+    },
+    {
+      "source": "/photo_gallery",
+      "destination": "/photo_gallery.html"
+    },
+    {
+      "source": "/photo-gallery",
+      "destination": "/photo_gallery.html"
+    },
+    {
+      "source": "/privacy_policy",
+      "destination": "/privacy_policy.html"
+    },
+    {
+      "source": "/privacy-policy",
+      "destination": "/privacy_policy.html"
+    },
+    {
+      "source": "/team_member",
+      "destination": "/team_member.html"
+    },
+    {
+      "source": "/team-member",
+      "destination": "/team_member.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        }
+      ]
+    },
+    {
+      "source": "/public/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/public/data/market-data.json",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=15, stale-while-revalidate=30"
+        }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Authorization, X-Requested-With"
+        }
+      ]
+    }
+  ]
+}

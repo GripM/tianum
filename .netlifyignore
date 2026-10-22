@@ -1,0 +1,14 @@
+# Netlify Deployment Ignore List
+.netlify/
+.git/
+node_modules/
+.env
+.env.*
+.env.example
+scratch/
+*.zip
+*.log
+server.js
+vercel.json
+backup_*/
+*.bak

@@ -1,0 +1,63 @@
+# ==============================================================================
+# Tianum Networth Managers - Netlify Redirects & Route Configuration
+# ==============================================================================
+
+# 1. Serverless API Proxies
+/api/market-data                /.netlify/functions/market-data                 200
+/api/contact                    /.netlify/functions/contact                     200
+/api/enquiry                    /.netlify/functions/enquiry                     200
+/api/*                          /.netlify/functions/api                         200
+
+# 2. Administrative Portal Navigation Routes
+/admin/login                    /admin/login.html                               200
+/admin/dashboard                /admin/dashboard.html                           200
+/admin/enquiry                  /admin/enquiry.html                             200
+/admin/content                  /admin/content.html                             200
+/admin/profile                  /admin/profile.html                             200
+/admin/setting                  /admin/setting.html                             200
+/admin/social_media             /admin/social_media.html                        200
+/admin/social-media             /admin/social_media.html                        200
+/admin/page_home                /admin/page_home.html                           200
+/admin/page-home                /admin/page_home.html                           200
+/admin/page_about               /admin/page_about.html                          200
+/admin/page-about               /admin/page_about.html                          200
+/admin/page_contact             /admin/page_contact.html                        200
+/admin/page-contact             /admin/page_contact.html                        200
+/admin/service                  /admin/service.html                             200
+/admin/team_member              /admin/team_member.html                         200
+/admin/team-member              /admin/team_member.html                         200
+/admin/footer_setting           /admin/footer_setting.html                      200
+/admin/footer-setting           /admin/footer_setting.html                      200
+/admin/logout                   /admin/login.html                               302
+/admin/login/logout             /admin/login.html                               302
+/admin                          /admin/dashboard.html                           200
+/admin/                         /admin/dashboard.html                           200
+/admin/*                        /admin/login.html                               200
+
+# 3. Public Website Clean Routes
+/about                          /about.html                                     200
+/contact                        /contact.html                                   200
+/service                        /equities.html                                  301
+/service.html                   /equities.html                                  301
+/service-1                      /service-1.html                                 200
+/service-2                      /service-2.html                                 200
+/service-3                      /service-3.html                                 200
+/service-4                      /service-4.html                                 200
+/equities                       /equities.html                                  200
+/mutual-funds-sips              /mutual-funds-sips.html                         200
+/portfolio-management-services  /portfolio-management-services.html             200
+/alternative-investment-funds   /alternative-investment-funds.html              200
+/fixed-income                   /fixed-income.html                              200
+/etfs-gold                      /etfs-gold.html                                 200
+/investment-banking             /investment-banking.html                         200
+/photo_gallery                  /photo_gallery.html                              200
+/photo-gallery                  /photo_gallery.html                              200
+/privacy_policy                 /privacy_policy.html                             200
+/privacy-policy                 /privacy_policy.html                             200
+/team_member                    /team_member.html                                200
+/team-member                    /team_member.html                                200
+/index                          /index.html                                     200
+
+# 4. Custom 404 Fallback
+/*                              /404.html                                       404
+
