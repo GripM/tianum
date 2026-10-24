@@ -1,5 +1,5 @@
 /**
- * Tianum Networth Managers - Cross-Platform Netlify Deployment Packager
+ * Tianum Networth Managers - Cross-Platform Deployment Packager (cPanel & Netlify)
  * Runs on Windows, macOS, and Linux
  */
 
@@ -9,50 +9,67 @@ const { execSync } = require('child_process');
 
 const ROOT_DIR = path.resolve(__dirname, '..');
 const distDir = path.join(ROOT_DIR, 'dist');
-const zipName = 'netlify-deploy.zip';
-const aliasZipName = 'tianum-netlify-deploy.zip';
-const outZipPath = path.join(ROOT_DIR, zipName);
-const aliasZipPath = path.join(ROOT_DIR, aliasZipName);
+
+// Deployment Packages
+const cpanelZip = path.join(ROOT_DIR, 'cpanel-deploy.zip');
+const cpanelAliasZip = path.join(ROOT_DIR, 'tianum-cpanel.zip');
+const netlifyZip = path.join(ROOT_DIR, 'netlify-deploy.zip');
+const netlifyAliasZip = path.join(ROOT_DIR, 'tianum-netlify-deploy.zip');
 
 console.log('==========================================================');
-console.log('  Tianum Networth - Creating Netlify Deployable Package');
+console.log('  Tianum Networth - Creating Production Deployment Archives');
 console.log('==========================================================');
 
 // 1. Run production build script
-console.log('[1/3] Running production build validation & staging...');
+console.log('[1/4] Running production build validation & staging...');
 execSync('node scripts/build.js', { stdio: 'inherit', cwd: ROOT_DIR });
 
 // 2. Remove existing zip archives
-if (fs.existsSync(outZipPath)) fs.unlinkSync(outZipPath);
-if (fs.existsSync(aliasZipPath)) fs.unlinkSync(aliasZipPath);
+console.log('[2/4] Cleaning previous deployment packages...');
+[cpanelZip, cpanelAliasZip, netlifyZip, netlifyAliasZip].forEach(f => {
+  if (fs.existsSync(f)) {
+    try { fs.unlinkSync(f); } catch (e) {}
+  }
+});
 
-// 3. Compress dist/ into zip
-console.log('[2/3] Compressing staging directory into deployment ZIP...');
+// 3. Compress dist/ into cPanel Deployment ZIP (includes hidden files like .htaccess)
+console.log('[3/4] Compressing staging directory into cPanel deploy ZIP (with .htaccess)...');
 
 if (process.platform === 'win32') {
-  // Use PowerShell on Windows with execution policy bypass
-  const psCmd = `powershell -NoProfile -ExecutionPolicy Bypass -Command "Compress-Archive -Path '${distDir}\\*' -DestinationPath '${outZipPath}' -CompressionLevel Optimal -Force"`;
+  const psHelper = path.join(ROOT_DIR, 'scripts', 'create-zip.ps1');
+  const psCmd = `powershell -NoProfile -ExecutionPolicy Bypass -File "${psHelper}" -SourceDir "${distDir}" -ZipFile "${cpanelZip}"`;
   execSync(psCmd, { stdio: 'inherit', cwd: ROOT_DIR });
 } else {
-  // Use standard zip command on Linux / macOS
-  execSync(`cd "${distDir}" && zip -r -9 "${outZipPath}" ./*`, { stdio: 'inherit', cwd: distDir });
+  // Use zip on Unix preserving dotfiles
+  execSync(`cd "${distDir}" && zip -r -9 "${cpanelZip}" . -x "*.DS_Store"`, { stdio: 'inherit', cwd: distDir });
 }
 
-// Create alias copy
-if (fs.existsSync(outZipPath)) {
-  fs.copyFileSync(outZipPath, aliasZipPath);
+// Create alias copy for cPanel
+if (fs.existsSync(cpanelZip)) {
+  fs.copyFileSync(cpanelZip, cpanelAliasZip);
 }
 
-// 4. Verify package size and metrics
-console.log('[3/3] Auditing final deployment package...');
-const stat = fs.statSync(outZipPath);
+// Also create Netlify zip
+if (fs.existsSync(cpanelZip)) {
+  fs.copyFileSync(cpanelZip, netlifyZip);
+  fs.copyFileSync(cpanelZip, netlifyAliasZip);
+}
+
+// 4. Verify package contents
+console.log('[4/4] Verifying archive contents and metrics...');
+if (process.platform === 'win32') {
+  const verifyHelper = path.join(ROOT_DIR, 'scripts', 'verify-zip.ps1');
+  try {
+    execSync(`powershell -NoProfile -ExecutionPolicy Bypass -File "${verifyHelper}" -ZipFile "${cpanelZip}"`, { stdio: 'inherit', cwd: ROOT_DIR });
+  } catch (e) {}
+}
+
+const stat = fs.statSync(cpanelZip);
 const sizeMB = (stat.size / 1024 / 1024).toFixed(2);
 
 console.log('==========================================================');
-console.log('  SUCCESS! Netlify Deployable Package Created');
-console.log(`  Package: ${zipName} (${sizeMB} MB)`);
-console.log(`  Alias:   ${aliasZipName} (${sizeMB} MB)`);
-console.log(`  Direct:  Folder 'dist/' is also ready for direct drag-and-drop`);
-console.log('  Netlify Drop Limit: Max 100 MB, Individual files < 10 MB');
-console.log(`  Status: 100% Compliant (Total: ${sizeMB} MB, Largest File: ~6 MB)`);
+console.log('  SUCCESS! Deployment Packages Ready');
+console.log(`  cPanel Deploy Archive:  cpanel-deploy.zip (${sizeMB} MB)`);
+console.log(`  cPanel Alias Archive:   tianum-cpanel.zip (${sizeMB} MB)`);
+console.log(`  Direct Upload Folder:   dist/ (Ready for public_html)`);
 console.log('==========================================================');

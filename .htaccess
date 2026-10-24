@@ -1,0 +1,151 @@
+# ==============================================================================
+# Tianum Networth Managers - Production cPanel / Apache Configuration (.htaccess)
+# Ensures 100% flawless routing, clean URLs, asset loading, MIME types, and security.
+# ==============================================================================
+
+Options -Indexes
+DirectoryIndex index.html index.php
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # --------------------------------------------------------------------------
+    # 1. API Serverless & PHP Route Proxies
+    # --------------------------------------------------------------------------
+    RewriteRule ^api/contact/?$ api/contact.php [L,QSA]
+    RewriteRule ^api/enquiry/?$ api/enquiry.php [L,QSA]
+    RewriteRule ^api/market-data/?$ api/market-data.php [L,QSA]
+    RewriteRule ^api/admin/(.+)$ api/admin.php?action=$1 [L,QSA]
+    RewriteRule ^api/admin/?$ api/admin.php [L,QSA]
+
+    # --------------------------------------------------------------------------
+    # 2. Administrative Portal Navigation Routes
+    # --------------------------------------------------------------------------
+    RewriteRule ^admin/?$ admin/dashboard.html [L]
+    RewriteRule ^admin/dashboard/?$ admin/dashboard.html [L]
+    RewriteRule ^admin/login/?$ admin/login.html [L]
+    RewriteRule ^admin/enquiry/?$ admin/enquiry.html [L]
+    RewriteRule ^admin/content/?$ admin/content.html [L]
+    RewriteRule ^admin/profile/?$ admin/profile.html [L]
+    RewriteRule ^admin/setting/?$ admin/setting.html [L]
+    RewriteRule ^admin/social_media/?$ admin/social_media.html [L]
+    RewriteRule ^admin/social-media/?$ admin/social_media.html [L]
+    RewriteRule ^admin/page_home/?$ admin/page_home.html [L]
+    RewriteRule ^admin/page-home/?$ admin/page_home.html [L]
+    RewriteRule ^admin/page_about/?$ admin/page_about.html [L]
+    RewriteRule ^admin/page-about/?$ admin/page_about.html [L]
+    RewriteRule ^admin/page_contact/?$ admin/page_contact.html [L]
+    RewriteRule ^admin/page-contact/?$ admin/page_contact.html [L]
+    RewriteRule ^admin/service/?$ admin/service.html [L]
+    RewriteRule ^admin/team_member/?$ admin/team_member.html [L]
+    RewriteRule ^admin/team-member/?$ admin/team_member.html [L]
+    RewriteRule ^admin/footer_setting/?$ admin/footer_setting.html [L]
+    RewriteRule ^admin/footer-setting/?$ admin/footer_setting.html [L]
+    RewriteRule ^admin/logout/?$ admin/login.html [R=302,L]
+    RewriteRule ^admin/login/logout/?$ admin/login.html [R=302,L]
+
+    # --------------------------------------------------------------------------
+    # 3. Public Website Clean Routes & Service Canonicalization
+    # --------------------------------------------------------------------------
+    RewriteRule ^service/?$ equities.html [R=301,L]
+    RewriteRule ^service\.html$ equities.html [R=301,L]
+
+    # Specific Page Aliases
+    RewriteRule ^about/?$ about.html [L]
+    RewriteRule ^contact/?$ contact.html [L]
+    RewriteRule ^equities/?$ equities.html [L]
+    RewriteRule ^mutual-funds-sips/?$ mutual-funds-sips.html [L]
+    RewriteRule ^portfolio-management-services/?$ portfolio-management-services.html [L]
+    RewriteRule ^alternative-investment-funds/?$ alternative-investment-funds.html [L]
+    RewriteRule ^fixed-income/?$ fixed-income.html [L]
+    RewriteRule ^etfs-gold/?$ etfs-gold.html [L]
+    RewriteRule ^investment-banking/?$ investment-banking.html [L]
+    RewriteRule ^photo_gallery/?$ photo_gallery.html [L]
+    RewriteRule ^photo-gallery/?$ photo_gallery.html [L]
+    RewriteRule ^privacy_policy/?$ privacy_policy.html [L]
+    RewriteRule ^privacy-policy/?$ privacy_policy.html [L]
+    RewriteRule ^team_member/?$ team_member.html [L]
+    RewriteRule ^team-member/?$ team_member.html [L]
+    RewriteRule ^service-1/?$ service-1.html [L]
+    RewriteRule ^service-2/?$ service-2.html [L]
+    RewriteRule ^service-3/?$ service-3.html [L]
+    RewriteRule ^service-4/?$ service-4.html [L]
+    RewriteRule ^index/?$ index.html [L]
+
+    # Universal Clean URL Rewrite: If file.html exists, serve it
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME}.html -f
+    RewriteRule ^([^\.]+)$ $1.html [NC,L]
+</IfModule>
+
+# ------------------------------------------------------------------------------
+# 4. Accurate MIME Types (Prevents Font, Icon, and Media Loading Glitches)
+# ------------------------------------------------------------------------------
+<IfModule mod_mime.c>
+    AddType font/woff2 .woff2
+    AddType font/woff .woff
+    AddType font/ttf .ttf
+    AddType font/otf .otf
+    AddType font/eot .eot
+    AddType image/webp .webp
+    AddType image/svg+xml .svg .svgz
+    AddType video/mp4 .mp4
+    AddType video/webm .webm
+    AddType application/json .json
+    AddType application/javascript .js .mjs
+    AddType text/css .css
+</IfModule>
+
+# ------------------------------------------------------------------------------
+# 5. Cross-Origin Resource Sharing (CORS) & Browser Security Headers
+# ------------------------------------------------------------------------------
+<IfModule mod_headers.c>
+    # Enable WebFont CORS (Essential for FontAwesome icons on CDN / subdomains)
+    <FilesMatch "\.(ttf|ttc|otf|eot|woff|woff2|font.css|css|js)$">
+        Header set Access-Control-Allow-Origin "*"
+    </FilesMatch>
+
+    # High-Trust Security Headers
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+
+    # Static Asset Caching
+    <FilesMatch "\.(ico|jpg|jpeg|png|gif|webp|svg|css|js|woff|woff2|ttf|mp4)$">
+        Header set Cache-Control "max-age=31536000, public, immutable"
+    </FilesMatch>
+
+    <FilesMatch "\.json$">
+        Header set Cache-Control "no-cache, no-store, must-revalidate"
+    </FilesMatch>
+</IfModule>
+
+# ------------------------------------------------------------------------------
+# 6. Gzip / Deflate Compression (Reduces Bandwidth & Boosts Page Speed)
+# ------------------------------------------------------------------------------
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/atom+xml
+    AddOutputFilterByType DEFLATE image/svg+xml
+    AddOutputFilterByType DEFLATE font/ttf
+    AddOutputFilterByType DEFLATE font/otf
+    AddOutputFilterByType DEFLATE font/woff
+    AddOutputFilterByType DEFLATE font/woff2
+</IfModule>
+
+# ------------------------------------------------------------------------------
+# 7. Custom 404 Error Document
+# ------------------------------------------------------------------------------
+ErrorDocument 404 /404.html

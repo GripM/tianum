@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "name": "Vikramaditya Singhania",
+    "email": "v.singhania@singhaniaholdings.com",
+    "mobile": "+91 98220 14820",
+    "subject": "Wealth Management & Multi-Asset Allocation",
+    "message": "Looking for fiduciary consultation on structuring family office investments and private wealth across PMS/AIFs.",
+    "status": "New",
+    "is_read": false,
+    "created_at": "2026-10-13 14:15:22",
+    "updated_at": "2026-10-13 14:15:22"
+  },
+  {
+    "id": 2,
+    "name": "Sunil Kulkarni",
+    "email": "sunil.kulkarni@techapex.in",
+    "mobile": "+91 94225 33019",
+    "subject": "Corporate Treasury & Fixed Income",
+    "message": "Interested in debt syndication and liquidity management solutions for our mid-market tech firm in Pune.",
+    "status": "In Progress",
+    "is_read": true,
+    "created_at": "2026-10-12 16:40:10",
+    "updated_at": "2026-10-13 09:20:00"
+  },
+  {
+    "id": 3,
+    "name": "Ananya Deshmukh",
+    "email": "ananya.d@nexuscap.com",
+    "mobile": "+91 97640 21908",
+    "subject": "Investment Banking & M&A Advisory",
+    "message": "Seeking advisory on Series B growth capital and institutional equity placements in Maharashtra.",
+    "status": "Resolved",
+    "is_read": true,
+    "created_at": "2026-10-11 11:25:00",
+    "updated_at": "2026-10-12 18:00:00"
+  },
+  {
+    "id": 4,
+    "name": "Dr. Rajeshwar Rao",
+    "email": "dr.rao.cardio@apollohealth.org",
+    "mobile": "+91 98501 77234",
+    "subject": "Portfolio Management Services (PMS)",
+    "message": "Need a comprehensive portfolio audit of existing equity mutual funds and advisory on direct indexed equities.",
+    "status": "New",
+    "is_read": false,
+    "created_at": "2026-10-10 18:10:45",
+    "updated_at": "2026-10-10 18:10:45"
+  }
+]

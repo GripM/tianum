@@ -18,6 +18,7 @@ const requiredHtml = [
   'index.html',
   'about.html',
   'contact.html',
+  'service.html',
   'service-1.html',
   'service-2.html',
   'service-3.html',
@@ -176,7 +177,7 @@ async function main() {
   }
 
   // Copy configuration files
-  for (const cfg of ['_redirects', '_headers', 'package.json', 'vercel.json']) {
+  for (const cfg of ['_redirects', '_headers', '.htaccess', 'package.json', 'vercel.json']) {
     const src = path.join(ROOT_DIR, cfg);
     if (fs.existsSync(src)) {
       fs.copyFileSync(src, path.join(distDir, cfg));
@@ -222,7 +223,7 @@ async function main() {
     }
   }
 
-  for (const dir of ['public', 'admin', 'netlify', 'api']) {
+  for (const dir of ['public', 'admin', 'netlify', 'api', 'data']) {
     const src = path.join(ROOT_DIR, dir);
     if (fs.existsSync(src)) {
       copyDirSync(src, path.join(distDir, dir));
