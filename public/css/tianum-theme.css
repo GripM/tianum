@@ -2894,13 +2894,30 @@ select.form-select.tn-select-dark option:checked {
 }
 
 .tn-hero-kicker {
-  color: #d8b868;
-  font-size: 0.8125rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #dfb75c;
+  font-size: 0.82rem;
   font-weight: 600;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   margin-bottom: 1.25rem;
+  background: transparent;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+  line-height: 1.4;
+}
+
+.tn-hero-kicker::before {
+  content: "";
   display: inline-block;
+  width: 28px;
+  height: 2px;
+  background: linear-gradient(90deg, #dfb75c, #f3d790);
+  border-radius: 2px;
+  flex-shrink: 0;
 }
 
 .tn-hero-main-title {
@@ -3303,9 +3320,13 @@ select.form-select.tn-select-dark option:checked {
     padding-bottom: 1rem !important;
   }
   .tn-hero-kicker {
-    font-size: 11.5px !important;
-    letter-spacing: 0.14em !important;
+    font-size: 0.72rem !important;
+    letter-spacing: 0.16em !important;
     margin-bottom: 0.75rem !important;
+    gap: 0.5rem !important;
+  }
+  .tn-hero-kicker::before {
+    width: 20px !important;
   }
   .tn-hero-main-title {
     font-size: clamp(2rem, 6.8vw, 2.75rem) !important;
@@ -3581,25 +3602,36 @@ select.form-select.tn-select-dark option:checked {
 .tn-hero-kicker {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
   color: #dfb75c;
-  font-size: 0.76rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   margin-bottom: 1.25rem;
-  background: rgba(196, 155, 72, 0.12);
-  border: 1px solid rgba(196, 155, 72, 0.3);
-  padding: 0.35rem 0.85rem;
-  border-radius: 30px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  border-radius: 0;
+  line-height: 1.4;
 }
 
-.tn-kicker-dot {
-  width: 6px;
-  height: 6px;
-  background-color: #dfb75c;
-  border-radius: 50%;
-  box-shadow: 0 0 8px #dfb75c;
+.tn-hero-kicker::before {
+  content: "";
+  display: inline-block;
+  width: 28px;
+  height: 2px;
+  background: linear-gradient(90deg, #dfb75c, #f3d790);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+#services {
+  scroll-margin-top: 85px;
 }
 
 .tn-photo-hero-title {

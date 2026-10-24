@@ -267,7 +267,16 @@
 				return;
 			}
 			const data = await res.json();
-			allEnquiriesList = data.enquiries || [];
+			if (data && Array.isArray(data.enquiries) && data.enquiries.length > 0) {
+				allEnquiriesList = data.enquiries;
+			} else {
+				try {
+					const local = localStorage.getItem('tn_enquiries');
+					allEnquiriesList = local ? JSON.parse(local) : (data.enquiries || []);
+				} catch(e) {
+					allEnquiriesList = data.enquiries || [];
+				}
+			}
 			
 			// Update badges
 			updateFilterBadges(allEnquiriesList);
@@ -458,30 +467,7 @@
 			const data = await res.json();
 			if (data.status === 'success') {
 				showAlert('Status updated to ' + newStatus + ' successfully.');
-				// Auto-parse URL query parameters (?status=New, ?id=12, ?q=...)
-	async function initEnquiryPage() {
-		await fetchEnquiries();
-		try {
-			const urlParams = new URLSearchParams(window.location.search);
-			const statusParam = urlParams.get('status');
-			const idParam = urlParams.get('id');
-			const qParam = urlParams.get('q');
-
-			if (statusParam && statusParam !== 'all') {
-				filterByStatus(statusParam);
-			}
-			if (qParam) {
-				document.getElementById('enquirySearchInput').value = qParam;
-				onSearchInput(qParam);
-			}
-			if (idParam) {
-				setTimeout(() => {
-					openDetailModal(parseInt(idParam, 10));
-				}, 200);
-			}
-		} catch(e) {}
-	}
-	initEnquiryPage();
+				fetchEnquiries();
 			}
 		} catch (err) {
 			alert('Failed to update status.');
@@ -621,7 +607,40 @@
 		});
 	}
 
-	fetchEnquiries();
+	async function initEnquiryPage() {
+		await fetchEnquiries();
+		try {
+			const urlParams = new URLSearchParams(window.location.search);
+			const statusParam = urlParams.get('status');
+			const idParam = urlParams.get('id');
+			const qParam = urlParams.get('q');
+
+			if (statusParam && statusParam !== 'all') {
+				filterByStatus(statusParam);
+			}
+			if (qParam) {
+				document.getElementById('enquirySearchInput').value = qParam;
+				onSearchInput(qParam);
+			}
+			if (idParam) {
+				setTimeout(() => {
+					openDetailModal(parseInt(idParam, 10));
+				}, 200);
+			}
+		} catch(e) {}
+	}
+
+	window.addEventListener('storage', function(e) {
+		if (e.key === 'tn_enquiries' || e.key === 'tn_last_updated') {
+			fetchEnquiries();
+		}
+	});
+
+	window.addEventListener('tianum_new_enquiry', function() {
+		fetchEnquiries();
+	});
+
+	initEnquiryPage();
 	</script>
 
 </body>

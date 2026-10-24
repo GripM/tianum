@@ -32,6 +32,25 @@ exports.handler = async (event, context) => {
       }
     }
 
+    if (body.name || body.email) {
+      const globalEnquiries = global.__TIANUM_GLOBAL_ENQUIRIES__ || (global.__TIANUM_GLOBAL_ENQUIRIES__ = []);
+      const newEnq = {
+        id: body.id || Date.now(),
+        name: body.name || 'Client',
+        email: body.email || '',
+        mobile: body.mobile || body.phone || '',
+        subject: body.subject || 'Website Consultation Request',
+        message: body.message || 'Consultation request from website form',
+        status: 'New',
+        is_read: false,
+        created_at: body.created_at || new Date().toISOString().replace('T', ' ').slice(0, 19),
+        updated_at: body.updated_at || new Date().toISOString().replace('T', ' ').slice(0, 19)
+      };
+      if (!globalEnquiries.some(e => String(e.id) === String(newEnq.id))) {
+        globalEnquiries.unshift(newEnq);
+      }
+    }
+
     return {
       statusCode: 200,
       headers: headers,

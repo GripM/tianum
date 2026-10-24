@@ -364,7 +364,16 @@
 			// 2. Fetch recent enquiries
 			const enqRes = await fetch('/api/admin/enquiries?limit=8');
 			const enqData = await enqRes.json();
-			dashboardEnquiries = enqData.enquiries || [];
+			if (enqData && Array.isArray(enqData.enquiries) && enqData.enquiries.length > 0) {
+				dashboardEnquiries = enqData.enquiries;
+			} else {
+				try {
+					const local = localStorage.getItem('tn_enquiries');
+					dashboardEnquiries = local ? JSON.parse(local) : (enqData.enquiries || []);
+				} catch(e) {
+					dashboardEnquiries = enqData.enquiries || [];
+				}
+			}
 			renderDashboardEnquiries(dashboardEnquiries);
 
 		} catch (err) {
@@ -523,6 +532,16 @@
 			return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
 		});
 	}
+
+	window.addEventListener('storage', function(e) {
+		if (e.key === 'tn_enquiries' || e.key === 'tn_last_updated') {
+			loadDashboardData();
+		}
+	});
+
+	window.addEventListener('tianum_new_enquiry', function() {
+		loadDashboardData();
+	});
 
 	loadDashboardData();
 

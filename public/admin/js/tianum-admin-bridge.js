@@ -234,16 +234,71 @@
       if (response && response.ok) {
         const cType = response.headers.get('content-type') || '';
         if (cType.includes('application/json')) {
-          // If GET /api/admin/enquiries, save authoritative server enquiries to localStorage
+          // If GET /api/admin/enquiries, check if server actually provided enquiries array
           if (url.startsWith('/api/admin/enquiries') && method === 'GET') {
             try {
               const serverJson = await response.clone().json();
-              if (serverJson && Array.isArray(serverJson.enquiries)) {
-                saveStoredEnquiries(serverJson.enquiries);
+              if (serverJson && Array.isArray(serverJson.enquiries) && serverJson.enquiries.length > 0) {
+                // Merge server enquiries with local ones to preserve any freshly submitted client enquiries
+                const local = getStoredEnquiries();
+                const merged = [...local];
+                serverJson.enquiries.forEach(se => {
+                  if (!merged.some(m => String(m.id) === String(se.id))) {
+                    merged.push(se);
+                  }
+                });
+                saveStoredEnquiries(merged);
+                return createJsonResponse({ status: 'success', enquiries: merged });
+              }
+            } catch(e) {}
+            // If server returned 200 without enquiries list (e.g. Netlify's generic api live response),
+            // return stored enquiries directly!
+            return createJsonResponse({ status: 'success', enquiries: getStoredEnquiries() });
+          }
+
+          // If GET /api/admin/stats, check if server actually provided stats
+          if (url.startsWith('/api/admin/stats')) {
+            try {
+              const serverJson = await response.clone().json();
+              if (serverJson && typeof serverJson.total === 'number') {
                 return response;
               }
             } catch(e) {}
+            const enqs = getStoredEnquiries();
+            return createJsonResponse({
+              status: 'success',
+              total: enqs.length,
+              unread: enqs.filter(e => !e.is_read || e.status === 'New').length,
+              in_progress: enqs.filter(e => e.status === 'In Progress').length,
+              resolved: enqs.filter(e => e.status === 'Resolved').length
+            });
           }
+
+          // If public form POST, ensure client record is saved locally too
+          if ((url === '/api/enquiry' || url === '/api/contact' || url === '/contact' || url.startsWith('/api/contact')) && method === 'POST') {
+            try {
+              if (body && (body.name || body.email)) {
+                const enqs = getStoredEnquiries();
+                const newEnq = {
+                  id: body.id || Date.now(),
+                  name: body.name || 'Client',
+                  email: body.email || '',
+                  mobile: body.mobile || body.phone || '',
+                  subject: body.subject || 'Website Consultation Request',
+                  message: body.message || 'Consultation request from website form',
+                  status: 'New',
+                  is_read: false,
+                  created_at: body.created_at || new Date().toISOString().replace('T', ' ').slice(0, 19),
+                  updated_at: body.updated_at || new Date().toISOString().replace('T', ' ').slice(0, 19)
+                };
+                if (!enqs.some(e => String(e.id) === String(newEnq.id))) {
+                  enqs.unshift(newEnq);
+                  saveStoredEnquiries(enqs);
+                }
+              }
+            } catch(e) {}
+          }
+
           return response;
         }
       }
